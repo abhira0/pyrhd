@@ -1,8 +1,9 @@
 import os
-from bs4.element import ResultSet
 from typing import Union
+
 import requests
 from bs4 import BeautifulSoup
+from bs4.element import ResultSet
 
 
 class UTILS:

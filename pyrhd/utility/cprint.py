@@ -33,5 +33,5 @@ def aprint(*args, sup_err: bool = False, sep: str = " ", **kwargs):
             para = fg(*clr)
         else:
             continue
-        print(para + args[i] + fg.rs, end=sep)
+        print(para + str(args[i]) + fg.rs, end=sep)
     print()

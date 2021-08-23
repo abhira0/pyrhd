@@ -14,8 +14,8 @@ setuptools.setup(
     url="https://github.com/abhira0/pyrhd",
     project_urls={"URL Shortener": "geekcrew.in/s"},
     license="NA",
-    # packages=setuptools.find_packages(),
-    install_requires=["requests", "bs4"],
+    package_dir={"": "pyrhd"},
+    packages=setuptools.find_packages(where="pyrhd"),
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: NA :: NA",

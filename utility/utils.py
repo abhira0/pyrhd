@@ -27,14 +27,27 @@ class UTILS:
         return soup_select
 
     def makedir(subdir_path: str) -> None:
-        """Checks whether the given path/directory is present or not, if not present it creates one."""
+        """Checks whether the given path/directory is present or not,
+        if not present, creates one.
+
+        Args:
+            subdir_path (str): [description]
+        """
         try:
             if not os.path.exists(subdir_path):
                 os.mkdir(subdir_path)
         except:
             ...
 
-    def makedirs(subdir_path: str) -> None:
-        """Checks whether the given path/directory is present or not, if not present it creates one. Works recursively"""
-        if not os.path.exists(subdir_path):
-            os.makedirs(subdir_path, exist_ok=True)
+    def makedirs(dir_path: str) -> None:
+        """Calls os.makedirs(path[, exist_ok=True])
+            Super-mkdir; create a leaf directory and all intermediate ones.  Works like
+            mkdir, except that any intermediate path segment (not just the rightmost)
+            will be created if it does not exist. If the target directory already
+            exists, don't raise an OSError. This is recursive.
+
+        Args:
+            dir_path (str): path of the directory to be created
+        """
+        if not os.path.exists(dir_path):
+            os.makedirs(dir_path, exist_ok=True)

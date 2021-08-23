@@ -4,7 +4,7 @@ from threading import BoundedSemaphore, Thread
 
 import requests
 from pyrhd.harvester.hrv8r import BaseHarvester
-from utility.cprint.cprint import aprint
+from pyrhd.utility.cprint import aprint
 
 
 class BaseDownloader(BaseHarvester):

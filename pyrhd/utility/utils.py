@@ -5,7 +5,7 @@ import requests
 from bs4 import BeautifulSoup
 from bs4.element import ResultSet
 
-from cprint.cprint import aprint
+from cprint import aprint
 
 
 class Utils:

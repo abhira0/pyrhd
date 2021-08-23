@@ -4,6 +4,9 @@ from typing import Union
 import requests
 from bs4 import BeautifulSoup
 from bs4.element import ResultSet
+from termcolor import cprint
+
+from cprint.cprint import aprint
 
 
 def sourceCode(url: Union[str, requests.models.Response], selector: str) -> ResultSet:
@@ -19,27 +22,33 @@ def sourceCode(url: Union[str, requests.models.Response], selector: str) -> Resu
     Returns:
         ResultSet: Selected elements from the DOM (html source code)
     """
-    check4resp = type(url) == requests.models.Response
-    plain_text = url.text if check4resp else requests.get(url).text
-    soup_select = BeautifulSoup(plain_text, "html.parser").select(selector)
-    return soup_select
+    # If the given url is actually the 'Response' of the get method
+    if type(url) == requests.models.Response:
+        plain_text = url.text
+    # If the given url the URL in 'string' data type
+    elif type(url) == str:
+        plain_text = requests.get(url).text
+    # return the selected elements through Beautifulsoup and CSS selector
+    return BeautifulSoup(plain_text, "html.parser").select(selector)
 
 
-def makedir(subdir_path: str) -> None:
+def makedir(path: str, verbose: bool = False) -> None:
     """Checks whether the given path/directory is present or not,
-    if not present, creates one.
+    if not present, creates one
 
     Args:
-        subdir_path (str): [description]
+        path (str): Path of the directory to be created
+        verbose (bool, optional): Verbose. Defaults to False.
     """
-    try:
-        if not os.path.exists(subdir_path):
-            os.mkdir(subdir_path)
-    except:
-        ...
+    if not os.path.exists(path):
+        os.mkdir(path)
+        if verbose:
+            aprint(f"✅  Directory created : '{path}'", "green")
+    elif verbose:
+        aprint(f"⚠️   Directory existed : '{path}'", "cyan")
 
 
-def makedirs(dir_path: str) -> None:
+def makedirs(path: str, verbose: bool = False) -> None:
     """Calls os.makedirs(path[, exist_ok=True])
         Super-mkdir; create a leaf directory and all intermediate ones.  Works like
         mkdir, except that any intermediate path segment (not just the rightmost)
@@ -47,7 +56,25 @@ def makedirs(dir_path: str) -> None:
         exists, don't raise an OSError. This is recursive.
 
     Args:
-        dir_path (str): path of the directory to be created
+        path (str): Path of the directory to be created
+        verbose (bool, optional): Verbose. Defaults to False.
     """
-    if not os.path.exists(dir_path):
-        os.makedirs(dir_path, exist_ok=True)
+    if not os.path.exists(path):
+        os.makedirs(path, exist_ok=True)
+        if verbose:
+            aprint(f"✅  Directory created recursively: '{path}'", "green")
+    elif verbose:
+        aprint(f"⚠️   Directory existed : '{path}'", "cyan")
+
+
+def cleanPathName(text: str) -> str:
+    """Clean the path name according ot the Windows 10 file system rule
+
+    Args:
+        text (str): path
+
+    Returns:
+        str: cleaned path with no illegal character
+    """
+    excluded = ["\\", "/", "<", ">", "|", '"', "?", "*", ":"]
+    return "".join(i for i in text if i not in excluded)

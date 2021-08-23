@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="pyrhd",
-    version="0.0.7",
+    version="0.0.8",
     author="abhira0",
     author_email="abhira0@protonmail.com",
     description="Scraper helper",
@@ -16,7 +16,7 @@ setuptools.setup(
     license="NA",
     packages=setuptools.find_packages(),
     # packages=["pyrhd"],
-    install_requires=["requests", "bs4"],
+    install_requires=["requests", "bs4", "sty"],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: NA :: NA",

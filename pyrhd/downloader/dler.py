@@ -28,6 +28,7 @@ class BaseDownloader(BaseHarvester):
         downloaded = os.path.exists(path_)
         if downloaded:
             aprint(f"⚠️ Existing media ", "green", url, "magenta")
+            sema4.release()
             return True
 
         # TODO: Add resume functionality for partially downloaded files

@@ -5,7 +5,7 @@ import requests
 from bs4 import BeautifulSoup
 from bs4.element import ResultSet
 
-from cprint import aprint
+from pyrhd.utility.cprint import aprint
 
 
 class Utils:

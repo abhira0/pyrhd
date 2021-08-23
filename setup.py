@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="pyrhd",
-    version="0.0.10",
+    version="0.0.11",
     author="abhira0",
     author_email="abhira0@protonmail.com",
     description="Scraper helper",

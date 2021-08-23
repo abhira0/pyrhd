@@ -17,7 +17,7 @@ class BaseDownloader(BaseHarvester):
 
     @classmethod
     def downloadAMedia(
-        url: str, dir_: str, title: str, sema4: BoundedSemaphore
+        cls, url: str, dir_: str, title: str, sema4: BoundedSemaphore
     ) -> bool:
         url_filename, ex10sion = url.split("/")[-1].split(".")
         ex10sion = ex10sion.split("?")[0] if "?" in ex10sion else ex10sion

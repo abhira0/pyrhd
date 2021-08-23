@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="pyrhd",
-    version="0.0.1",
+    version="0.0.2",
     author="abhira0",
     author_email="abhira0@protonmail.com",
     description="Scraper helper",
@@ -14,7 +14,7 @@ setuptools.setup(
     url="https://github.com/abhira0/pyrhd",
     project_urls={"URL Shortener": "geekcrew.in/s"},
     license="NA",
-    packages=setuptools.find_packages(),
+    # packages=setuptools.find_packages(),
     install_requires=["requests", "bs4"],
     classifiers=[
         "Programming Language :: Python :: 3",

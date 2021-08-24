@@ -1,10 +1,9 @@
 import os
-from typing import Union
+from typing import List, Union
 
-import requests
+import requests, threading
 from bs4 import BeautifulSoup
 from bs4.element import ResultSet
-
 from pyrhd.utility.cprint import aprint
 
 
@@ -81,3 +80,12 @@ class Utils:
         """
         excluded = ["\\", "/", "<", ">", "|", '"', "?", "*", ":"]
         return "".join(i for i in text if i not in excluded)
+
+    @staticmethod
+    def joinThreads(thr: List[threading.Thread]) -> None:
+        """Join all the threads present in the parameter list
+
+        Args:
+            thr (List[threading.Thread]): List of all the threads which are to be joined
+        """
+        [i.join() for i in thr]

@@ -7,8 +7,10 @@ SAVING_INTERVAL = 10
 
 
 class BaseHarvester:
-    def __init__(self, ultimatum_path) -> None:
+    def __init__(self, ultimatum_path, saving_interval: int = None) -> None:
         self.ultimatum_path = ultimatum_path
+        # custom saving interval if given, else defaults to global variable SAVING_INTERVAL
+        self.save_int = saving_interval or SAVING_INTERVAL
         self.ultimatum = {}
         self.getFileData()
         self.life_saver_thr = threading.Thread(target=self.lifeSaver, daemon=True)
@@ -42,5 +44,5 @@ class BaseHarvester:
 
     def lifeSaver(self):
         while True:
-            time.sleep(SAVING_INTERVAL)
+            time.sleep(self.save_int)
             self.saveUltimatum()

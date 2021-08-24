@@ -3,7 +3,7 @@ from sty import RgbFg, Style, bg, ef, fg, rs
 fg.orange = Style(RgbFg(255, 150, 50))
 
 
-def aprint(*args, sup_err: bool = False, sep: str = " ", **kwargs):
+def aprint(*args, sup_err: bool = False, sep: str = " ", end: str = "\n", **kwargs):
     """Alternative Print\n
     Eg:\n
         ("a--", (10, 15, 20), "b--", "red", "g--", "green", sep="\\n")\n
@@ -34,4 +34,4 @@ def aprint(*args, sup_err: bool = False, sep: str = " ", **kwargs):
         else:
             continue
         print(para + str(args[i]) + fg.rs, end=sep)
-    print()
+    print(end=end)

@@ -1,7 +1,8 @@
 import os
-from typing import List, Union
+import threading
+from typing import Iterable, List, Tuple, Union
 
-import requests, threading
+import requests
 from bs4 import BeautifulSoup
 from bs4.element import ResultSet
 from pyrhd.utility.cprint import aprint
@@ -89,3 +90,38 @@ class Utils:
             thr (List[threading.Thread]): List of all the threads which are to be joined
         """
         [i.join() for i in thr]
+
+    @staticmethod
+    def getCFD(f) -> str:
+        """Get the absolute "Current File Directory" path
+
+        Args:
+            f (str): file absolute path
+
+        Returns:
+            str: Absolute path of the parent directory
+        """
+        return os.path.dirname(f)
+
+    def createThread(
+        target: function, args: Union[List, Tuple], thr_list: list
+    ) -> threading.Thread:
+        """Create a thread, append the thread to a given list
+        for further use and finally start the thread.
+
+        Args:
+            target (function): target method /function to thread
+            args (Union[List, Tuple]): list of arguments to be passed (must be in order)
+            thr_list (list): List of threads
+
+        Returns:
+            threading.Thread: Newly created thread is returned after starting it
+        """
+        # Thread arguments must be a encapsulated in a tuple
+        if type(args) != tuple:
+            args = tuple(args)
+        # Create a thread using threading module
+        thread = threading.Thread(target=target, args=args)
+        thr_list.append(thread)  # Appending to thread's list
+        thread.start()  # Starting the thread
+        return thread  # Return created thread

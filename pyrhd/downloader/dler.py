@@ -18,9 +18,9 @@ class BaseDownloader(BaseHarvester):
 
     @classmethod
     def downloadAMedia(
-        cls, url: str, dir_: str, title: str, sema4: BoundedSemaphore
+        cls, url: str, dir_: str, title: str = None, sema4: BoundedSemaphore = None
     ) -> bool:
-        filename, f10sion = os.path.splitext(title)
+        filename, f10sion = os.path.splitext(title or "")
         url_filename, ex10sion = url.split("/")[-1].split(".")
         ex10sion = ex10sion.split("?")[0] if "?" in ex10sion else ex10sion
         path_ = f"{dir_}\\{filename or url_filename}.{ex10sion or f10sion or ''}"
@@ -37,8 +37,12 @@ class BaseDownloader(BaseHarvester):
         if os.path.exists(path_ + ".part"):
             os.remove(path_ + ".part")
 
-        r = requests.get(url, stream=True)
-        if r.status_code == 200:
+        try:
+            r = requests.get(url, stream=True)
+        except Exception as e:
+            aprint(e, "red")
+
+        if r and r.status_code == 200:
             r.raw.decode_content = True
             with open(path_ + ".part", "wb") as f:
                 shutil.copyfileobj(r.raw, f)
@@ -51,8 +55,8 @@ class BaseDownloader(BaseHarvester):
             downloaded = True
 
         if not downloaded:
-            msg = f"❎ {r.status_code} Error while downloading "
+            msg = f"❎ {r.status_code if r else ''} Error while downloading "
             aprint(msg, "red", url, "magenta")
-
-        sema4.release()
+        if sema4:
+            sema4.release()
         return downloaded

@@ -1,3 +1,4 @@
+import json
 import os
 import threading
 from typing import Callable, List, Tuple, Union
@@ -106,6 +107,7 @@ class Utils:
             """
             [i.join() for i in thr]
 
+        @staticmethod
         def createThread(
             target: Callable, args: Union[List, Tuple], thr_list: list
         ) -> threading.Thread:
@@ -128,3 +130,25 @@ class Utils:
             thr_list.append(thread)  # Appending to thread's list
             thread.start()  # Starting the thread
             return thread  # Return created thread
+
+    class json:
+        @staticmethod
+        def prettify(path: str, indent: int = 4) -> bool:
+            """Prettify json file and save it back to the same file
+
+            Args:
+                path (str): path to the json file
+                indent (int, optional): level of indentation. Defaults to 4.
+
+            Returns:
+                bool: True if success, else False
+            """
+            try:
+                with open(path, "r") as f:
+                    tmp = json.load(f)
+                with open(path, "w") as f:
+                    json.dump(tmp, f, indent=indent)
+                return True
+            except Exception as e:
+                aprint(e, "red")
+                return False

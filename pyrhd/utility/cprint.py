@@ -1,5 +1,9 @@
 from sty import RgbFg, Style, bg, ef, fg, rs
 
+"""To know more about sty module
+https://github.com/feluxe/sty
+"""
+# Eg to create a new color
 fg.orange = Style(RgbFg(255, 150, 50))
 
 

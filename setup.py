@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="pyrhd",
-    version="0.1",
+    version="0.1.3",
     author="abhira0",
     author_email="abhira0@protonmail.com",
     description="Scraping Library for Personal Use",
@@ -13,7 +13,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/abhira0/pyrhd",
     project_urls={"URL Shortener": "https://geekcrew.in/s/"},
-    download_url="https://github.com/abhira0/pyrhd/archive/refs/tags/v0.1.zip",
+    download_url="https://github.com/abhira0/pyrhd/archive/refs/tags/v0.1.3.zip",
     keywords=[
         "python",
         "scrape",

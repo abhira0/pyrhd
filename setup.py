@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="pyrhd",
-    version="0.1",
+    version="0.1.1",
     author="abhira0",
     author_email="abhira0@protonmail.com",
     description="Scraping Library for Personal Use",
@@ -24,16 +24,16 @@ setuptools.setup(
         "harvester",
         "harvest",
     ],
-    license="NA",
+    license="MIT",
     packages=setuptools.find_packages(),
     # packages=["pyrhd"],
     install_requires=["requests", "bs4", "sty"],
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
-        "Topic :: Software Development :: Scraper",
+        "Topic :: Software Development :: Libraries",
         "Programming Language :: Python :: 3.9",
         "License :: OSI Approved :: MIT License",
-        "Operating System :: Windows 10",
+        "Operating System :: Microsoft :: Windows :: Windows 10",
     ],
 )

@@ -13,7 +13,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/abhira0/pyrhd",
     project_urls={"URL Shortener": "https://geekcrew.in/s/"},
-    download_url="https://github.com/abhira0/pyrhd/archive/refs/tags/v0.1.3.zip",
+    # download_url="https://github.com/abhira0/pyrhd/archive/refs/tags/v0.1.3.zip",
     keywords=[
         "python",
         "scrape",

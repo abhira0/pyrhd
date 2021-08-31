@@ -2,6 +2,7 @@ import json
 import os
 import threading
 from typing import Callable, List, Tuple, Union
+from bs4 import element
 
 import requests
 from bs4 import BeautifulSoup
@@ -152,3 +153,22 @@ class Utils:
             except Exception as e:
                 aprint(e, "red")
                 return False
+
+    class bs4:
+        @staticmethod
+        def parseCSSSelector(CSS_Selector: str) -> str:
+            elements = CSS_Selector.split()
+            return " > ".join(i.split(".")[0].split("#")[0] for i in elements)
+
+        @staticmethod
+        def parseHeader(json: dict) -> dict:
+            """Parse header from Firefox copied header
+
+            Args:
+                json (dict): copied header
+
+            Returns:
+                dict: actual header for requests module
+            """
+            x = list(json.values())[0]["headers"]
+            return {i["name"]: i["value"] for i in x}

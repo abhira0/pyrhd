@@ -1,8 +1,7 @@
 import json
 import os
 import threading
-from typing import Callable, List, Tuple, Union
-from bs4 import element
+from typing import Callable, List, Optional, Tuple, Union
 
 import requests
 from bs4 import BeautifulSoup
@@ -172,3 +171,19 @@ class Utils:
             """
             x = list(json.values())[0]["headers"]
             return {i["name"]: i["value"] for i in x}
+
+    class parser:
+        @staticmethod
+        def firefoxHeader(dikt: Optional[dict]) -> Optional[dict]:
+            """Returns the parsed firefox header in dictionary. Dictionary is copied from mozilla firefox header.
+
+            Args:
+                dikt (Optional[dict]): Dictionary to be parsed
+
+            Returns:
+                Optional[dict]: Newly parsed header dictionary
+            """
+            res = {}
+            for i in dikt.popitem()[1]["headers"]:
+                res[i["name"]] = i["value"]
+            return res

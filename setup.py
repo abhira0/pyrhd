@@ -5,14 +5,18 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="pyrhd",
-    version="0.1.5",
+    version="0.1.6",
     author="abhira0",
     author_email="abhira0@protonmail.com",
     description="Scraping Library for Personal Use",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/abhira0/pyrhd",
-    project_urls={"URL Shortener": "https://geekcrew.in/s/"},
+    # url="https://github.com/abhira0/pyrhd",
+    project_urls={
+        "GitHub": "https://github.com/abhira0/pyrhd",
+        "Author Website": "https://abhirao.in",
+        "URL Shortener": "https://abhirao.in/s/",
+    },
     # download_url="https://github.com/abhira0/pyrhd/archive/refs/tags/v0.1.3.zip",
     keywords=[
         "python",

@@ -40,7 +40,7 @@ class BaseHarvester:
     def saveUltimatum(self):
         with open(self.ultimatum_path, "w") as f:
             # use copy() to avoid "RuntimeError: dictionary changed size during iteration"
-            json.dump(self.ultimatum.copy(), f)
+            json.dump(self.ultimatum.copy(), f, indent=4)
 
     def lifeSaver(self):
         while True:

@@ -1,7 +1,8 @@
 import json
 import os
+import pathlib
 import threading
-from typing import Callable, List, Optional, Tuple, Union
+from typing import Callable, List, Optional, Sequence, Tuple, Union
 
 import requests
 from bs4 import BeautifulSoup
@@ -97,6 +98,23 @@ class Utils:
             """
             return os.path.dirname(f)
 
+        @staticmethod
+        def getAllFiles(root_path: str) -> Sequence[str]:
+            """Generates all the files present in a root folder (and its sub-folders recursively)
+
+            Args:
+                root_path (str): root path where files needs to be searched
+
+            Returns:
+                Sequence[str]: path of a single file at a time
+
+            Yields:
+                Iterator[Sequence[str]]: paths of all files
+            """
+            for path, subdirs, files in os.walk(root_path):
+                for name in files:
+                    yield pathlib.Path(pathlib.PurePath(path, name)).resolve().__str__()
+
     class threading:
         @staticmethod
         def joinThreads(thr: List[threading.Thread]) -> None:
@@ -133,6 +151,26 @@ class Utils:
 
     class json:
         @staticmethod
+        def saveDict(d: dict, file_path: str, indent: int = 4) -> bool:
+            """Save a dictionary in a json file with indentation
+
+            Args:
+                d (dict): dictionary to be saved
+                file_path (str): path of the json file. All the parent folders must be present inorder to create a json file, else it will return False
+                indent (int): Indentation to be used in the saved json file. Defaults to 4.
+
+            Returns:
+                bool: True if the operation is successful, else False
+            """
+            try:
+                with open(file_path, "w") as f:
+                    json.dump(d, f, indent=indent)
+                return True
+            except Exception as e:
+                aprint(e, "red")
+                return False
+
+        @staticmethod
         def prettify(path: str, indent: int = 4) -> bool:
             """Prettify json file and save it back to the same file
 
@@ -141,7 +179,7 @@ class Utils:
                 indent (int, optional): level of indentation. Defaults to 4.
 
             Returns:
-                bool: True if success, else False
+                bool: True if the operation is successful, else False
             """
             try:
                 with open(path, "r") as f:
@@ -175,7 +213,7 @@ class Utils:
     class parser:
         @staticmethod
         def firefoxHeader(dikt: Optional[dict]) -> Optional[dict]:
-            """Returns the parsed firefox header in dictionary. Dictionary is copied from mozilla firefox header.
+            """Returns the parsed firefox header in dictionary
 
             Args:
                 dikt (Optional[dict]): Dictionary to be parsed

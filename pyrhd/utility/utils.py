@@ -2,6 +2,7 @@ import json
 import os
 import pathlib
 import threading
+from multiprocessing import Process
 from typing import Callable, List, Optional, Sequence, Tuple, Union
 
 import requests
@@ -225,3 +226,37 @@ class Utils:
             for i in dikt.popitem()[1]["headers"]:
                 res[i["name"]] = i["value"]
             return res
+
+    class multiprocessing:
+        @staticmethod
+        def joinProcesses(proc_list: List[Process]) -> None:
+            """Join all the processes present in the parameter list
+
+            Args:
+                proc_list (List[multiprocessing.Process]): List of all the processes which are to be joined
+            """
+            [i.join() for i in proc_list]
+
+        @staticmethod
+        def createProcess(
+            target: Callable, args: Union[List, Tuple], proc_list: list
+        ) -> Process:
+            """Create a process, append the process to a given list
+            for further use and finally start the process.
+
+            Args:
+                target (function): target method /function to process
+                args (Union[List, Tuple]): list of arguments to be passed (must be in order)
+                proc_list (list): List of processes
+
+            Returns:
+                multiprocessing.Process: Newly created process is returned after starting it
+            """
+            # Process arguments must be a encapsulated in a tuple
+            if type(args) != tuple:
+                args = tuple(args)
+            # Create a process using multiprocessing module
+            process = Process(target=target, args=args)
+            proc_list.append(process)  # Appending to process's list
+            process.start()  # Starting the process
+            return process  # Return created process

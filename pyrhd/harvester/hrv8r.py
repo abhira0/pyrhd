@@ -2,21 +2,24 @@ import json
 import os
 import threading
 import time
+from copy import deepcopy
 
 SAVING_INTERVAL = 10
 
 
 class BaseHarvester:
-    def __init__(self, ultimatum_path, saving_interval: int = None) -> None:
+    def __init__(
+        self, ultimatum_path, saving_interval: int = None, default_ultimatum: dict = {}
+    ) -> None:
         self.ultimatum_path = ultimatum_path
         # custom saving interval if given, else defaults to global variable SAVING_INTERVAL
         self.save_int = saving_interval or SAVING_INTERVAL
         self.ultimatum = {}
-        self.getFileData()
+        self.getFileData(default_ultimatum)
         self.life_saver_thr = threading.Thread(target=self.lifeSaver, daemon=True)
         self.life_saver_thr.start()
 
-    def getFileData(self):
+    def getFileData(self, default_ultimatum):
         try:
             if os.path.exists(self.ultimatum_path):
                 with open(self.ultimatum_path, "r") as f:
@@ -34,15 +37,19 @@ class BaseHarvester:
         except:
             p = os.path.dirname(self.ultimatum_path)
             os.makedirs(p, exist_ok=True)
-            self.ultimatum = {}
+        if self.ultimatum == {}:
+            self.ultimatum = default_ultimatum
         self.saveUltimatum()
 
     def saveUltimatum(self):
-        with open(self.ultimatum_path, "w") as f:
-            # use copy() to avoid "RuntimeError: dictionary changed size during iteration"
-            json.dump(self.ultimatum.copy(), f, indent=4)
+        try:
+            with open(self.ultimatum_path, "w") as f:
+                # use copy() to avoid "RuntimeError: dictionary changed size during iteration"
+                json.dump(deepcopy(self.ultimatum), f, indent=4)
+        except:
+            ...
 
     def lifeSaver(self):
         while True:
-            time.sleep(self.save_int)
             self.saveUltimatum()
+            time.sleep(self.save_int)

@@ -9,11 +9,12 @@ from pyrhd.utility.cprint import aprint
 
 
 class BaseDownloader(BaseHarvester):
-    def __init__(self, ultimatum_path) -> None:
-        super().__init__(ultimatum_path)
+    def __init__(
+        self, ultimatum_path, saving_interval: int = None, default_ultimatum: dict = {}
+    ) -> None:
+        super().__init__(ultimatum_path, saving_interval, default_ultimatum)
         self.ultimatum_path = ultimatum_path
-        self.ultimatum = {}
-        self.getFileData()
+        self.getFileData(default_ultimatum)
         self.life_saver_thr = Thread(target=self.lifeSaver, daemon=True)
         self.life_saver_thr.start()
 
@@ -26,15 +27,16 @@ class BaseDownloader(BaseHarvester):
         sema4: BoundedSemaphore = None,
         verbose: bool = True,
         err_ver: bool = True,
+        add_ver: bool = False,
     ) -> bool:
         filename, f10sion = os.path.splitext(title or "")
         url_filename, ex10sion = os.path.splitext(url.split("/")[-1])
         ex10sion = ex10sion.split("?")[0] if "?" in ex10sion else ex10sion
-        path_ = f"{dir_}\\{filename or url_filename}.{ex10sion or f10sion or ''}"
+        path_ = fr"{dir_}\\{filename or url_filename}{ex10sion or f10sion or ''}"
 
         downloaded = os.path.exists(path_)
         if downloaded:
-            aprint(f"⚠️ Existing media ", "green", url, "magenta") if verbose else None
+            aprint(f"⚠️ Existing media ", "green", url, "magenta") if add_ver else None
             sema4.release() if sema4 else None
             return True
 

@@ -44,6 +44,3 @@ class Dupy:
                     print(f"Removing {del_file}")
         cache_path = os.path.join(root_path, "dupy.json")
         Utils.json.saveDict(hm, cache_path)
-
-
-Dupy("../scrollls/CelebrityPokies")

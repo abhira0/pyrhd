@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="pyrhd",
-    version="0.1.6",
+    version="0.1.7",
     author="abhira0",
     author_email="abhira0@protonmail.com",
     description="Scraping Library for Personal Use",
@@ -13,9 +13,9 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     # url="https://github.com/abhira0/pyrhd",
     project_urls={
-        "GitHub": "https://github.com/abhira0/pyrhd",
+        "URL Shortener": "https://abhirao.in/sh/",
         "Author Website": "https://abhirao.in",
-        "URL Shortener": "https://abhirao.in/s/",
+        "GitHub": "https://github.com/abhira0/pyrhd",
     },
     # download_url="https://github.com/abhira0/pyrhd/archive/refs/tags/v0.1.3.zip",
     keywords=[

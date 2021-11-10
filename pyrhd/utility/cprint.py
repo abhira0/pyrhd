@@ -1,4 +1,5 @@
 from sty import RgbFg, Style, bg, ef, fg, rs
+from typing import Union, Tuple
 
 """To know more about sty module
 https://github.com/feluxe/sty
@@ -47,3 +48,17 @@ def aprint(*args, sup_err: bool = True, sep: str = " ", end: str = "\n", **kwarg
             sep = ""
         print(para + str(args[i]) + ender, end=sep)
     print(end=end)
+
+
+def printInfo(
+    i_sym: str,
+    i_clr: Union[int, str, Tuple[int, int, int]],
+    b_clr: Union[int, str, Tuple[int, int, int]],
+    *args,
+    sup_err: bool = True,
+    sep: str = " ",
+    end: str = "\n",
+    **kwargs
+):
+    aprint("[", b_clr, i_sym, i_clr, "] ", b_clr, sep="", end="")
+    aprint(*args, sup_err=sup_err, sep=sep, end=end)

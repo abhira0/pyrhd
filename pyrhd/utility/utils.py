@@ -128,7 +128,7 @@ class Utils:
 
         @staticmethod
         def createThread(
-            target: Callable, args: Union[List, Tuple], thr_list: list
+            target: Callable, args: Union[List, Tuple], thr_list: List[threading.Thread]
         ) -> threading.Thread:
             """Create a thread, append the thread to a given list
             for further use and finally start the thread.

@@ -41,6 +41,6 @@ class Dupy:
             for file_hash, file_based in size_based[2].items():
                 for del_file in file_based[:-1]:
                     os.remove(del_file)
-                    print(f"Removing {del_file}")
+                    print(f"Removing {del_file}", "green")
         cache_path = os.path.join(root_path, "dupy.json")
         Utils.json.saveDict(hm, cache_path)

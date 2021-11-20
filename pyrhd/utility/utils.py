@@ -15,7 +15,10 @@ class Utils:
     class requests:
         @staticmethod
         def sourceCode(
-            url: Union[str, requests.models.Response], selector: str
+            url: Union[str, requests.models.Response],
+            selector: str,
+            header: Optional[dict] = None,
+            cookies: Optional[dict] = None,
         ) -> ResultSet:
             """Returns the selected elements from html source code
 
@@ -31,7 +34,7 @@ class Utils:
             """
             # If the given url the URL in 'string' format
             if type(url) == str:
-                url = requests.get(url)
+                url = requests.get(url, cookies=cookies, headers=header)
             plain_text = url.text
             if url.status_code != 200:
                 return []
@@ -223,8 +226,9 @@ class Utils:
                 Optional[dict]: Newly parsed header dictionary
             """
             res = {}
-            for i in dikt.popitem()[1]["headers"]:
-                res[i["name"]] = i["value"]
+            for j in dikt:
+                for i in dikt[j]["headers"]:
+                    res[i["name"]] = i["value"]
             return res
 
     class multiprocessing:

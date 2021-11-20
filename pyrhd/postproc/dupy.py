@@ -1,11 +1,14 @@
-import hashlib, os
+import hashlib
+import os
 
 from pyrhd.utility.utils import Utils
 
 
 class Dupy:
     def __init__(self, root_path) -> None:
-        self.main(root_path)
+        self.root_path = root_path
+        self.dups = []
+        self.main()
 
     def getHash(self, file_path, first_chunk_only=True) -> str:
         with open(file_path, "rb") as f:
@@ -13,10 +16,10 @@ class Dupy:
             hashed = hashlib.sha1(file_data).digest().hex()
         return hashed
 
-    def main(self, root_path):
+    def main(self):
         hm = dict()
         # size based hashmap
-        for i in Utils.os.getAllFiles(root_path):
+        for i in Utils.os.getAllFiles(self.root_path):
             file_size = os.path.getsize(i)
             hm[file_size] = hm.get(file_size, {0: [], 1: {}, 2: {}})
             hm[file_size][0].append(i)
@@ -37,10 +40,14 @@ class Dupy:
                     hm[i][2][hashed].append(file_path)
 
         # analysis
+        count = 0
         for size, size_based in hm.items():
-            for file_hash, file_based in size_based[2].items():
-                for del_file in file_based[:-1]:
-                    os.remove(del_file)
-                    print(f"Removing {del_file}", "green")
-        cache_path = os.path.join(root_path, "dupy.json")
+            for file, file_based in size_based[2].items():
+                count += 1
+                if len(file_based) > 1:
+                    self.dups.append(file_based)
+        cache_path = os.path.join(self.root_path, "dupy.json")
         Utils.json.saveDict(hm, cache_path)
+
+    def getDups(self):
+        return self.dups

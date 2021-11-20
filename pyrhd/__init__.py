@@ -1,3 +1,3 @@
 from .downloader import BaseDownloader
-from .utility import Utils, printInfo, aprint
 from .harvester import BaseHarvester
+from .utility import Utils, aprint, printInfo

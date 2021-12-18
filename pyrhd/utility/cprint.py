@@ -1,5 +1,5 @@
 import sys
-from typing import List, Optional, Tuple, Union
+from typing import Optional, Tuple, Union
 
 from sty import RgbFg, Style, bg, ef, fg, rs
 
@@ -11,7 +11,7 @@ fg.orange = Style(RgbFg(255, 150, 50))
 
 
 def aprint(
-    *args: object,
+    *args,
     sup_err: Optional[bool] = True,
     sep: Optional[str] = " ",
     end: Optional[str] = "\n",
@@ -25,11 +25,8 @@ def aprint(
         ("Prints in green","green")
 
     Args:
-        sup_err (Optional[bool], optional): Suppress errors/exceptions showing on terminal. Defaults to True.
-        sep (Optional[str], optional): String inserted between values. Defaults to " ".
-        end (Optional[str], optional): String appended after the last value. Defaults to "\\n".
-        same_line (Optional[bool], optional): . Defaults to False.
-        flush (Optional[bool], optional): Whether to forcibly flush the stream. Defaults to False.
+        sup_err (bool, optional): Suppress errors/exceptions showing on terminal. Defaults to False.
+        sep (str, optional): seperator used if the elements are more than 1 to print. Defaults to " ".
     """
     for i in range(0, len(args), 2):
         try:
@@ -79,20 +76,8 @@ def printInfo(
     flush: Optional[bool] = False,
     **kwargs
 ):
-    """
-
-    Args:
-        i_sym (str): Info symbol.
-        i_clr (Union[int, str, Tuple[int, int, int]]): Info colour.
-        b_clr (Union[int, str, Tuple[int, int, int]]): Brackets colour.
-        sup_err (Optional[bool], optional): Suppress errors/exceptions showing on terminal. Defaults to True.
-        sep (Optional[str], optional): String inserted between values. Defaults to " ".
-        end (Optional[str], optional): String appended after the last value. Defaults to "\\n".
-        same_line (Optional[bool], optional): . Defaults to False.
-        flush (Optional[bool], optional): Whether to forcibly flush the stream. Defaults to False.
-    """
-    aprint("[", b_clr, i_sym, i_clr, "] ", b_clr, sep="", end="", flush=flush)
-    aprint(*args, sup_err=sup_err, sep=sep, end=end, same_line=same_line, flush=flush)
+    aprint("[", b_clr, i_sym, i_clr, "] ", b_clr, sep="", end="")
+    aprint(*args, sup_err=sup_err, sep=sep, end=end, same_line=same_line)
 
 
 def deleteLines(n=1):

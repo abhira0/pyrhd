@@ -4,6 +4,8 @@ import threading
 import time
 from copy import deepcopy
 
+from pyrhd.utility.cprint import aprint
+
 SAVING_INTERVAL = 10
 
 
@@ -15,6 +17,7 @@ class BaseHarvester:
         # custom saving interval if given, else defaults to global variable SAVING_INTERVAL
         self.save_int = saving_interval or SAVING_INTERVAL
         self.ultimatum = {}
+        self.save_flag = True
         self.getFileData(default_ultimatum)
         self.life_saver_thr = threading.Thread(target=self.lifeSaver, daemon=True)
         self.life_saver_thr.start()
@@ -46,10 +49,14 @@ class BaseHarvester:
             with open(self.ultimatum_path, "w") as f:
                 # use copy() to avoid "RuntimeError: dictionary changed size during iteration"
                 json.dump(deepcopy(self.ultimatum), f, indent=4)
-        except:
-            ...
+        except Exception as e:
+            aprint(e, "red")
 
     def lifeSaver(self):
-        while True:
+        while self.save_flag:
             self.saveUltimatum()
             time.sleep(self.save_int)
+
+    def quitSaver(self):
+        self.save_flag = False
+        self.saveUltimatum()

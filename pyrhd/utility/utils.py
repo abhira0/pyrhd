@@ -88,7 +88,7 @@ class Utils:
                 str: cleaned path with no illegal character
             """
             excluded = ["\\", "/", "<", ">", "|", '"', "?", "*", ":"]
-            return "".join(i for i in text if i not in excluded)
+            return "".join(i for i in text.strip() if i not in excluded)
 
         @staticmethod
         def getCFD(f) -> str:

@@ -1,7 +1,7 @@
 import os
 import shutil
 import time
-from threading import BoundedSemaphore, Thread
+from threading import BoundedSemaphore
 from typing import Optional
 
 import requests
@@ -13,11 +13,11 @@ class BaseDownloader(BaseHarvester):
     def __init__(
         self, ultimatum_path, saving_interval: int = None, default_ultimatum: dict = {}
     ) -> None:
-        super().__init__(ultimatum_path, saving_interval, default_ultimatum)
         self.ultimatum_path = ultimatum_path
-        self.getFileData(default_ultimatum)
-        self.life_saver_thr = Thread(target=self.lifeSaver, daemon=True)
-        self.life_saver_thr.start()
+        super().__init__(ultimatum_path, saving_interval, default_ultimatum)
+        # self.getFileData(default_ultimatum)
+        # self.life_saver_thr = Thread(target=self.lifeSaver, daemon=True)
+        # self.life_saver_thr.start()
 
     @classmethod
     def downloadAMedia(

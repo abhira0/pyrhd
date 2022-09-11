@@ -33,13 +33,68 @@ class Utils:
                 ResultSet: Selected elements from the DOM (html source code)
             """
             # If the given url the URL in 'string' format
-            if type(url) == str:
+            if type(url) is str:
                 url = requests.get(url, cookies=cookies, headers=header)
             plain_text = url.text
             if url.status_code != 200:
                 return []
             # return the selected elements through Beautifulsoup and CSS selector
             return BeautifulSoup(plain_text, "html.parser").select(selector)
+
+        def parseHeader(header_str: str) -> dict:
+            """Convert a header in string datatype to dictionary format
+
+            Args:
+                header_str (str): header in str
+
+            Returns:
+                dict: header in dictionary
+
+            Example:
+                Header in str:
+                    "
+                    GET /wallpapers HTTP/2
+                    Host: rog.asus.com
+                    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:104.0) Gecko/20100101 Firefox/104.0
+                    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
+                    Accept-Language: en-US,en;q=0.5
+                    Accept-Encoding: gzip, deflate, b
+                    "
+                to python dict:
+                    {
+                        'Host': 'rog.asus.com',
+                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:104.0) Gecko/20100101 Firefox/104.0',
+                        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+                        'Accept-Language': 'en-US,en;q=0.5',
+                        'Accept-Encoding': 'gzip, deflate, br'
+                    }
+            """
+            d = {}
+            lines = header_str.splitlines()
+            try:
+                a, b = lines[0].strip(": ")
+            except:
+                lines = lines[1:]
+
+            for line in lines:
+                a, b = line.split(": ")
+                d[a.strip()] = b.strip()
+            return d
+
+        def parseCSSPath(css_path: str) -> str:
+            """Parse tag names from the css path
+
+            Args:
+                css_path (str): CSS path with tag + (id or class or none)
+
+            Returns:
+                str: CSS path with only tag
+
+            Example:
+                input:  'html body#rogProduct.vsc-initialized div.layout_default div.main-container.container-s.wp-container section.rog-container.rog-container-m'
+                output: 'html body div div section'
+            """
+            return " ".join(i.split(".")[0].split("#")[0] for i in css_path.split())
 
     class os:
         @staticmethod
@@ -264,3 +319,58 @@ class Utils:
             proc_list.append(process)  # Appending to process's list
             process.start()  # Starting the process
             return process  # Return created process
+
+    @staticmethod
+    def site_map_colored(map: list[str]):
+        print("Site structure:", "-" * 9)
+        aprint("site", "magenta")
+        indent = [0]
+        i_len = [0]
+        for ind, i in enumerate(map):
+            initial = "****" if ind == 0 else "*   |"
+            underline = "" if ind == 0 else "`" * (i_len[-1] + 1)
+            line = f"{initial}{' '*(indent[-1]-i_len[-1]-2)}{underline}|- "
+            aprint(line, "magenta", end="")
+            aprint(f"{i} 1", "green")
+            indent.append(indent[-1] + len(i) + 5)
+            i_len.append(len(i) + 3)
+
+        for ind, i in enumerate(map[::-1]):
+            initial = "*   " if ind == len(map) - 1 else "*   |"
+            indentation = indent.pop()
+            last_len = i_len.pop()
+            aprint(f"{initial}{' '*(indentation-last_len-3)}", "magenta", end="")
+            aprint(("`." * (len(i) // 2 + 6))[: len(i) + 6], "cyan")
+            aprint(f"{initial}{' '*(indentation-last_len-3)}|- ", "magenta", end="")
+            aprint(f"{i} n", "green")
+
+        aprint("*****", "magenta")
+        print("-" * 25)
+
+    @staticmethod
+    def site_map(map: list[str]):
+        content = []
+        content.append("site")
+        indent = [0]
+        i_len = [0]
+        for ind, i in enumerate(map):
+            initial = "****" if ind == 0 else "*   |"
+            underline = "" if ind == 0 else "`" * (i_len[-1] + 1)
+            line = f"{initial}{' '*(indent[-1]-i_len[-1]-2)}{underline}|- {i} 1"
+            indent.append(indent[-1] + len(i) + 5)
+            i_len.append(len(i) + 3)
+            content.append(line)
+
+        for ind, i in enumerate(map[::-1]):
+            initial = "*   " if ind == len(map) - 1 else "*   |"
+            indentation = indent.pop()
+            last_len = i_len.pop()
+            many = ("`." * (len(i) // 2 + 6))[: len(i) + 6]
+            many = f"|{many[:-1]}" if ind == len(map) - 1 else many
+            line1 = f"{initial}{' '*(indentation-last_len-3)}{many}"
+            content.append(line1)
+            line2 = f"{initial}{' '*(indentation-last_len-3)}|- {i} n"
+            content.append(line2)
+
+        content.append("*****")
+        print("\n".join(content))

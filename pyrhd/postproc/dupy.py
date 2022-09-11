@@ -4,6 +4,7 @@ import os
 import time
 from threading import Thread
 
+from pyrhd.utility.cprint import aprint
 from pyrhd.utility.utils import Utils
 
 
@@ -31,18 +32,30 @@ class Dupy:
     def main(self):
         self.hm = dict()
         # size based hashmap
+        tot_len = 0
         for i in Utils.os.getAllFiles(self.root_path):
-            file_size = os.path.getsize(i)
+            if i.endswith(".part"):
+                continue
+            try:
+                file_size = os.path.getsize(i)
+            except:
+                continue
             self.hm[file_size] = self.hm.get(file_size, {0: [], 1: {}, 2: {}})
             self.hm[file_size][0].append(i)
-        print(len(self.hm))
+            tot_len += 1
+        aprint("0. Collisions based on size:", "cyan", tot_len - len(self.hm), "green")
 
         # first 1024 bytes based hashmap
         for i, j in ((i, j) for (i, j) in self.hm.items() if len(j[0]) > 1):
             for file_path in j[0]:
-                hashed = self.getHash(file_path)
+                try:
+                    hashed = self.getHash(file_path)
+                except:
+                    continue
                 self.hm[i][1][hashed] = self.hm[i][1].get(hashed, [])
                 self.hm[i][1][hashed].append(file_path)
+        tmp = sum(len(j) - 1 for i1, i2 in self.hm.items() for j in i2[1].values())
+        aprint("1. Collisions based on first 1024 bytes:", "cyan", tmp, "green")
 
         # full-file based hashmap
         for i, j in self.hm.items():
@@ -52,6 +65,10 @@ class Dupy:
                         hashed = self.getHash(file_path, False)
                         self.hm[i][2][hashed] = self.hm[i][2].get(hashed, [])
                         self.hm[i][2][hashed].append(file_path)
+        tmp = sum(
+            max(len(j) - 1, 0) for i1, i2 in self.hm.items() for j in i2[2].values()
+        )
+        aprint("2. Collisions based on entire file:", "cyan", tmp, "green")
 
         # analysis
         count = 0
